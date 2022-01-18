@@ -1,5 +1,5 @@
 import '../auth/loginstyle.css';
-import { useNavigate  } from "react-router-dom";
+import { NavLink, useNavigate  } from "react-router-dom";
 import { useState } from 'react';
 import { login } from '../../repository/LoginRepository';
 import { datosUsuario, loginUserResponse } from '../../properties/user';
@@ -66,10 +66,11 @@ export const LoginView = () => {
                                 className="form-control form-control-sm"
                             />
                         </div>
-                        <button onClick={handleClick} className="btn btn-primary btn-block">Sign in</button>
+                        
+                        <button onClick={handleClick} className="btn btn-primary btn-block">Ingresar</button>
                         
                     </form>
-
+                    
                     { isLoading &&
                         <div >
                             <div className="spinner-border" role="status"> </div>
@@ -78,6 +79,7 @@ export const LoginView = () => {
                     }
                 </div>
             </div>
+        <NavLink className="btn btn-success mt-0" to="/landing">Ver ofertas</NavLink>
         </div>
     </div>
     

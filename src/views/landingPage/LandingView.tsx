@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { MainLayout } from '../../layouts/MainLayout';
 import { product, productApirResponse } from '../../properties/products';
 import { getProducts } from '../../repository/productsRepo';
 import { Card } from '../../shared/Card'
@@ -26,16 +27,18 @@ export const LandingView = () => {
     }, []);
 
     return (
-        <div className="container pt-5">
-            <div className="row">
-                 
-                {  (datosProduct.length > 0) && 
-                        datosProduct.map((val, key) => {
-                            return <Card producto = {val} key={key}/>
-                        })
-                
-                }
+        <MainLayout>
+            <div className="container pt-5">
+                <div className="row">
+                    
+                    {  (datosProduct.length > 0) && 
+                            datosProduct.map((val, key) => {
+                                return <Card producto = {val} key={key}/>
+                            })
+                    
+                    }
+                </div>
             </div>
-        </div>
+        </MainLayout>
     )
 }

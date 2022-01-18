@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const HomeView = () => {
+export const CarView = () => {
     return (
         <div>
             <h1>Home</h1>

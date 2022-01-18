@@ -15,8 +15,3 @@ export interface datosUsuario {
     email: string,
     password: string
 }
-
-export interface userLogin {
-    transaccion: string,
-    datosUsuario: datosUsuario
-}

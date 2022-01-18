@@ -1,8 +1,10 @@
 import '../auth/loginstyle.css';
 import { useNavigate  } from "react-router-dom";
 import { useState } from 'react';
-import { login } from '../../config/repository/LoginRepository';
-import { datosUsuario, userLogin } from '../../properties/user';
+import { login } from '../../repository/LoginRepository';
+import { datosUsuario, loginUserResponse } from '../../properties/user';
+import { setStorage } from '../../services/storage/storage';
+import { storage } from '../../config/AppConstants';
 
 const init: datosUsuario = {
     email: "",
@@ -13,20 +15,31 @@ export const LoginView = () => {
     const navigate = useNavigate();
     const [datosUsuario, setDatosUsuario] = useState<datosUsuario>(init);
     const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+
+    const hanfleApiResponse = (data: loginUserResponse) => {
+        setIsLoading(false)
+        if(data.codigoRetorno !== 'ERROR'){
+            setStorage(storage.user, 'true');
+            console.log(data);
+            setIsError(false);
+            navigate("/");
+        }
+        else {
+            setIsError(true);
+            setStorage(storage.user, 'false');
+        }
+        
+    }
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        /* const user = getStorage('user'); */
-        setIsLoading(true);
-        login({
-            transaccion: 'autenticarUsuario',
-            datosUsuario
-        }).then( data => {
-                setIsLoading(false)
-                console.log("ejecucion:  ",data)
+        if(datosUsuario.email.length != 0 || datosUsuario.password.length != 0){
+            setIsLoading(true);
+            login({
+                ...datosUsuario
+            }).then( data => hanfleApiResponse(data) )
+        }
 
-            }   
-        )
-        //navigate("/");
         event.preventDefault();
     }
     return (
@@ -35,7 +48,9 @@ export const LoginView = () => {
             <div className="card-body">
                 <h3 className="card-title text-center">Log in to Codepen</h3>
                 <div className="card-text">
-                    <div className="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div>
+                    {isError &&
+                        <div className="alert alert-danger alert-dismissible fade show" role="alert">Incorrect username or password.</div>
+                    }
                     <form>
                         <div className="form-group">
                             <label >Email address</label>
